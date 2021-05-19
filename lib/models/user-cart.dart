@@ -1,7 +1,7 @@
 class UserCartData {
   
   final String uid;
-  final Map<String,int> productQuantity;
+  Map<String,dynamic> productQuantity;
   
   UserCartData({this.uid, this.productQuantity});
 }

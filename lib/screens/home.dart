@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/models/product.dart';
 import 'package:flutter_tutorial/models/user.dart';
-import 'package:flutter_tutorial/screens/product-card.dart';
 import 'package:flutter_tutorial/screens/product-list.dart';
 import 'package:flutter_tutorial/services/auth.dart';
 import 'package:flutter_tutorial/services/database.dart';
@@ -54,19 +53,13 @@ class _HomeState extends State<Home> {
               ),
           ],
         ),
-        body: ProductList() /* ListView.builder(
-          itemCount: products.length,
-          itemBuilder: (context, i) {
-            return ProductCard(
-              products[i].id,
-              products[i].name,
-              products[i].price,
-              () => setState(() {
-                products.remove(products[i]);
-              }),
-            );
-          },
-        ), */
+        body: Column(
+          children: [
+            Text("Check your cart"),
+            ProductList(),
+          ],
+        ),
+        
       ),
     );
   }

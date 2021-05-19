@@ -9,24 +9,25 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
-
   @override
   Widget build(BuildContext context) {
-
     final products = Provider.of<List<Product>>(context);
 
-    return ListView.builder(
-          itemCount: products.length,
-          itemBuilder: (context, i) {
-            return ProductCard(
-              products[i].id,
-              products[i].name,
-              products[i].price,
-              () => setState(() {
-                products.remove(products[i]);
-              }),
-            );
-          },
-        );
+    return Expanded(
+      child: ListView.builder(
+        itemCount: products.length,
+        itemBuilder: (context, i) {
+          return ProductCard(
+            id: products[i].id,
+            name: products[i].name,
+            price: products[i].price,
+            description: products[i].description,
+            delete: () => setState(() {
+              products.remove(products[i]);
+            }),
+          );
+        },
+      ),
+    );
   }
 }

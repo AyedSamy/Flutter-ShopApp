@@ -28,6 +28,7 @@ class DatabaseService {
       return Product(
         id: doc["id"] ?? 0,
         name: doc["name"] ?? 'NA',
+        description: doc["description"] ?? 'NA',
         price: doc["price"] ?? 0,
       );
     }).toList();
@@ -38,7 +39,7 @@ class DatabaseService {
   UserCartData _userCartDataFromSnapsot(DocumentSnapshot snapshot) {
     return UserCartData(
       uid:uid,
-      productQuantity:snapshot['productQuantity'],
+      productQuantity:snapshot['product_quantity'],
     );
   }
 

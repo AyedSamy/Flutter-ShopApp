@@ -48,8 +48,8 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User user = result.user;
 
-      // create a new document for the user with the uid
-      //await DatabaseService(uid: user.uid).updateUserData('red', 'snake', 'XL'); // initial user preferences on the kites (color, animal, size) he can update on the app
+      // create a new document for the user and his cart using his uid
+      await DatabaseService(uid: user.uid).updateUserCartData({}); // set an empty cart when a user is created
 
       return _userFromFirebaseUser(user);
     } catch(e){

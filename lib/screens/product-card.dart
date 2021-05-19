@@ -3,11 +3,12 @@ import 'package:flutter_tutorial/screens/product-detail.dart';
 
 class ProductCard extends StatelessWidget {
   final int id;
-  final String productName;
+  final String name;
+  final String description;
   final int price;
   final Function delete;
 
-  ProductCard(this.id, this.productName, this.price, this.delete);
+  ProductCard({this.id, this.name, this.description, this.price, this.delete});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class ProductCard extends StatelessWidget {
       showModalBottomSheet(context: context, builder: (context) {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-          child: ProductDetail(),
+          child: ProductDetail(id:id, name: name, description: description, price: price),
         );
       });
     }
@@ -44,7 +45,7 @@ class ProductCard extends StatelessWidget {
                 height: 10.0,
               ),
               Text(
-                '$productName', // PRODUCT NAME
+                '$name', // PRODUCT NAME
                 style: TextStyle(
                   color: Colors.blue[800],
                   letterSpacing: 1.0,
@@ -70,8 +71,8 @@ class ProductCard extends StatelessWidget {
                       onPressed: (){
                         _showDetailPanel();
                       },
-                      icon: Icon(Icons.add_shopping_cart),
-                      label: Text("Add to cart")),
+                      icon: Icon(Icons.dehaze),
+                      label: Text("See details")),
                 ],
               ),
               SizedBox(
