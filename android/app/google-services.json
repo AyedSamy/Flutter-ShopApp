@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "410056226782",
+    "project_id": "kite-shop-ccc48",
+    "storage_bucket": "kite-shop-ccc48.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:410056226782:android:54cfe2eea929fccf84cf4f",
+        "android_client_info": {
+          "package_name": "com.unice.ayed.kite_shop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "410056226782-3ebbv4k3j606gsbqls7m2p0o44ldnj2f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-7p34xGZlEJNLwv0_2DmbVxCCnqq7NaQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "410056226782-3ebbv4k3j606gsbqls7m2p0o44ldnj2f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
