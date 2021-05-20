@@ -49,7 +49,7 @@ class AuthService {
       User user = result.user;
 
       // create a new document for the user and his cart using his uid
-      await DatabaseService(uid: user.uid).updateUserCartData({}); // set an empty cart when a user is created
+      await DatabaseService(uid: user.uid).updateUserCartData({},0.0); // set an empty cart when a user is created, total price 0
 
       return _userFromFirebaseUser(user);
     } catch(e){

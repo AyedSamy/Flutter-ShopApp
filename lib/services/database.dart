@@ -15,9 +15,10 @@ class DatabaseService {
   final CollectionReference userCartCollection =
       FirebaseFirestore.instance.collection("user_cart");
 
-  Future updateUserCartData(Map productQuantity) async {
+  Future updateUserCartData(Map selectedProducts, dynamic totalCartPrice) async {
     return await userCartCollection.doc(uid).set({
-      'product_quantity': productQuantity,
+      'selected_products': selectedProducts,
+      'total_cart_price': totalCartPrice,
     });
   }
 
@@ -39,7 +40,8 @@ class DatabaseService {
   UserCartData _userCartDataFromSnapsot(DocumentSnapshot snapshot) {
     return UserCartData(
       uid:uid,
-      productQuantity:snapshot['product_quantity'],
+      selectedProducts:snapshot['selected_products'],
+      totalCartPrice:snapshot['total_cart_price'],
     );
   }
 

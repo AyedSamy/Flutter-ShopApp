@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_tutorial/models/user-cart.dart';
 import 'package:flutter_tutorial/models/user.dart';
-import 'package:flutter_tutorial/services/auth.dart';
 import 'package:flutter_tutorial/services/database.dart';
 import 'package:flutter_tutorial/shared/loading.dart';
 import 'package:provider/provider.dart';
@@ -49,13 +48,15 @@ class _ProductDetailState extends State<ProductDetail> {
             height: 10,
           ),
           RichText(
-            text: TextSpan(
-              style: TextStyle(color: Colors.black),
-              children: [
-                TextSpan(text: 'Description : ', style: TextStyle(fontWeight: FontWeight.bold,),),
-                TextSpan(text: "${widget.description}"),
-              ]
-            ),
+            text: TextSpan(style: TextStyle(color: Colors.black), children: [
+              TextSpan(
+                text: 'Description : ',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(text: "${widget.description}"),
+            ]),
             textAlign: TextAlign.center,
           ),
           SizedBox(
@@ -97,9 +98,41 @@ class _ProductDetailState extends State<ProductDetail> {
                 SizedBox(
                   height: 20,
                 ),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.black),
+                    children: [
+                      TextSpan(
+                        text: 'Description : ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(text: "${widget.description}"),
+                    ],
+                  ),  
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.black),
+                    children: [
+                      TextSpan(
+                        text: 'Price : ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(text: "${widget.price}€"),
+                    ],
+                  ),  
+                ),
+                SizedBox(height: 15,),
                 Center(
                   child: Text(
-                    "Quantity of this product in your cart : ${userCartData.productQuantity.containsKey(widget.name) ? userCartData.productQuantity[widget.name] : 0}",
+                    "Quantity in your cart : ${userCartData.selectedProducts.containsKey(widget.name) ? userCartData.selectedProducts[widget.name]['quantity'] : 0}",
                     style: TextStyle(fontSize: 13),
                   ),
                 ),
@@ -110,8 +143,15 @@ class _ProductDetailState extends State<ProductDetail> {
                     Container(
                       width: 100,
                       child: TextFormField(
-                        validator: (val) =>
-                            int.parse(val) > 99 ? "99 items max." : null,
+                        validator: (val) {
+                          if (val == "" || val == null) {
+                            return "1 item min.";
+                          } else if (int.parse(val) > 99) {
+                            return "99 items max.";
+                          } else {
+                            return null;
+                          }
+                        },
                         decoration: InputDecoration(
                           labelText: "Enter your quantity",
                           labelStyle: TextStyle(fontSize: 11),
@@ -122,7 +162,9 @@ class _ProductDetailState extends State<ProductDetail> {
                         ], // Only numbers can be entered
                         onChanged: (val) {
                           setState(() {
-                            quantity = int.parse(val);
+                            if (val != "" && val != null) {
+                              quantity = int.parse(val);
+                            }
                           });
                         },
                       ),
@@ -133,16 +175,23 @@ class _ProductDetailState extends State<ProductDetail> {
                     ElevatedButton.icon(
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
-                          if (userCartData.productQuantity
+                          if (userCartData.selectedProducts
                               .containsKey(widget.name)) {
-                            userCartData.productQuantity[widget.name] +=
+                            userCartData.selectedProducts[widget.name]['quantity'] +=
                                 quantity;
+                            userCartData.selectedProducts[widget.name]['total_price'] += quantity * widget.price;
                           } else {
-                            userCartData.productQuantity[widget.name] =
+                            userCartData.selectedProducts[widget.name] = {};
+                            userCartData.selectedProducts[widget.name]['quantity'] =
                                 quantity;
+                            userCartData.selectedProducts[widget.name]['unit_price'] =
+                                widget.price;
+                            userCartData.selectedProducts[widget.name]['total_price'] =
+                                quantity * widget.price;
                           }
+                          userCartData.totalCartPrice += widget.price * quantity;
                           DatabaseService(uid: user.uid)
-                              .updateUserCartData(userCartData.productQuantity);
+                              .updateUserCartData(userCartData.selectedProducts, userCartData.totalCartPrice);
                           //Navigator.pop(context);
                         }
                       },
@@ -155,7 +204,11 @@ class _ProductDetailState extends State<ProductDetail> {
                   height: 10,
                 ),
                 ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () async {
+                      userCartData.totalCartPrice -= userCartData.selectedProducts[widget.name]['quantity'] * widget.price;
+                      userCartData.selectedProducts.remove(widget.name);
+                      DatabaseService(uid: user.uid).updateUserCartData(userCartData.selectedProducts, userCartData.totalCartPrice);
+                    },
                     icon: Icon(Icons.remove),
                     label: Text("Remove from cart"))
               ],
