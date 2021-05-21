@@ -15,7 +15,7 @@ class DatabaseService {
   final CollectionReference userCartCollection =
       FirebaseFirestore.instance.collection("user_cart");
 
-  Future updateUserCartData(Map selectedProducts, dynamic totalCartPrice) async {
+  Future updateUserCartData(Map selectedProducts, double totalCartPrice) async {
     return await userCartCollection.doc(uid).set({
       'selected_products': selectedProducts,
       'total_cart_price': totalCartPrice,
@@ -45,13 +45,13 @@ class DatabaseService {
     );
   }
 
-  // get product stream
+  // get list of products stream
 
   Stream<List<Product>> get products {
     return productsCollection.snapshots().map(_productListFromSnapshot);
   }
 
-  // get user doc stream
+  // get user cart stream
 
   Stream<UserCartData> get userCartData {
     return userCartCollection.doc(uid).snapshots().map(_userCartDataFromSnapsot);

@@ -27,7 +27,7 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget build(BuildContext context) {
     final user = Provider.of<TheUser>(context);
 
-    if (user == null) {
+    if (user == null) { // If no user is logged, we invite the user to create an account to make an order
       return ListView(
         children: [
           Center(
@@ -72,7 +72,7 @@ class _ProductDetailState extends State<ProductDetail> {
       );
     }
 
-    return StreamBuilder<UserCartData>(
+    return StreamBuilder<UserCartData>( // if a user is logged, we retrieve his user cart data from firebase thanks to StreamBuilder and a get method in database service
       stream: DatabaseService(uid: user.uid).userCartData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -177,19 +177,19 @@ class _ProductDetailState extends State<ProductDetail> {
                         if (_formKey.currentState.validate()) {
                           if (userCartData.selectedProducts
                               .containsKey(widget.name)) {
-                            userCartData.selectedProducts[widget.name]['quantity'] +=
-                                quantity;
+                            userCartData.selectedProducts[widget.name]['quantity'] += quantity;
                             userCartData.selectedProducts[widget.name]['total_price'] += quantity * widget.price;
                           } else {
                             userCartData.selectedProducts[widget.name] = {};
-                            userCartData.selectedProducts[widget.name]['quantity'] =
-                                quantity;
-                            userCartData.selectedProducts[widget.name]['unit_price'] =
-                                widget.price;
-                            userCartData.selectedProducts[widget.name]['total_price'] =
-                                quantity * widget.price;
+                            userCartData.selectedProducts[widget.name]['quantity'] = quantity;
+                            userCartData.selectedProducts[widget.name]['total_price'] = quantity * widget.price;
                           }
-                          userCartData.totalCartPrice += widget.price * quantity;
+                          double totalCartPrice = 0.0;
+                          userCartData.selectedProducts[widget.name]['unit_price'] = widget.price;
+                          userCartData.selectedProducts.forEach((productName, info) {
+                            totalCartPrice += info['unit_price'] * info['quantity'];
+                          });
+                          userCartData.totalCartPrice = totalCartPrice;
                           DatabaseService(uid: user.uid)
                               .updateUserCartData(userCartData.selectedProducts, userCartData.totalCartPrice);
                           //Navigator.pop(context);
@@ -205,9 +205,11 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 ElevatedButton.icon(
                     onPressed: () async {
-                      userCartData.totalCartPrice -= userCartData.selectedProducts[widget.name]['quantity'] * widget.price;
-                      userCartData.selectedProducts.remove(widget.name);
-                      DatabaseService(uid: user.uid).updateUserCartData(userCartData.selectedProducts, userCartData.totalCartPrice);
+                      if(userCartData.selectedProducts.containsKey(widget.name)){
+                        userCartData.totalCartPrice -= userCartData.selectedProducts[widget.name]['quantity'] * userCartData.selectedProducts[widget.name]['unit_price'];
+                        userCartData.selectedProducts.remove(widget.name);
+                        DatabaseService(uid: user.uid).updateUserCartData(userCartData.selectedProducts, userCartData.totalCartPrice);
+                      }
                     },
                     icon: Icon(Icons.remove),
                     label: Text("Remove from cart"))
