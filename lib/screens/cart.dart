@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/models/user-cart.dart';
 import 'package:flutter_tutorial/models/user.dart';
+import 'package:flutter_tutorial/screens/cart-detail.dart';
 import 'package:flutter_tutorial/services/database.dart';
 import 'package:flutter_tutorial/shared/loading.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +18,8 @@ class _CartState extends State<Cart> {
     void _showCartDetailPanel(UserCartData userCartData) {
       showModalBottomSheet(context: context, builder: (context) {
         return Container(
-          padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-          child: Text("${userCartData.totalCartPrice}€"),
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: CartDetail(userCartData),
         );
       });
     }

@@ -35,7 +35,7 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.blue[800],
           elevation: 0.0,
           actions: [
-            TextButton.icon(
+            ElevatedButton.icon(
               onPressed: () async {
                 user == null
                     ? Navigator.pushNamed(context, "/signIn")
@@ -43,14 +43,22 @@ class _HomeState extends State<Home> {
               },
               icon: Icon(Icons.person),
               label: user == null ? Text("Login") : Text("Logout"),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.blue[800]),
+                elevation: MaterialStateProperty.all(0),
+              ),
             ),
             if (user == null)
-              TextButton.icon(
+              ElevatedButton.icon(
                 onPressed: () async {
                   Navigator.pushNamed(context, "/register");
                 },
-                icon: Icon(Icons.person),
+                icon: Icon(Icons.person_add_alt),
                 label: Text("Register"),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue[800]),
+                  elevation: MaterialStateProperty.all(0),
+                ),
               ),
           ],
         ),

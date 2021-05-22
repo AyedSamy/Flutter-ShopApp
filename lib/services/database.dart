@@ -14,6 +14,9 @@ class DatabaseService {
 
   final CollectionReference userCartCollection =
       FirebaseFirestore.instance.collection("user_cart");
+  
+  final CollectionReference usersCollection =
+      FirebaseFirestore.instance.collection("users");
 
   Future updateUserCartData(Map selectedProducts, double totalCartPrice) async {
     return await userCartCollection.doc(uid).set({
@@ -22,6 +25,13 @@ class DatabaseService {
     });
   }
 
+  Future updateUserData(String email, String firstname, String lastname) async {
+    return await usersCollection.doc(uid).set({
+      'email': email,
+      'firstname': firstname,
+      'lastname': lastname,
+    });
+  }
   // Product list from snapshot
 
   List<Product> _productListFromSnapshot(QuerySnapshot snapshot) {
