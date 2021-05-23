@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/models/product.dart';
 import 'package:flutter_tutorial/models/user.dart';
+import 'package:flutter_tutorial/screens/add-item.dart';
 import 'package:flutter_tutorial/screens/cart.dart';
 import 'package:flutter_tutorial/screens/product-list.dart';
 import 'package:flutter_tutorial/services/auth.dart';
@@ -23,6 +24,17 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+    void _showAddItemPanel() {
+      showModalBottomSheet(context: context, builder: (context) {
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: AddItem(),
+        );
+      });
+    }
+
+
     final user = Provider.of<TheUser>(context);
 
     return StreamProvider<List<Product>>.value(
@@ -67,6 +79,12 @@ class _HomeState extends State<Home> {
             Cart(),
             ProductList(),
           ],
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: _showAddItemPanel,
+          label: const Text('Add item'),
+          icon: const Icon(Icons.add),
+          backgroundColor: Colors.blue,
         ),
         
       ),
