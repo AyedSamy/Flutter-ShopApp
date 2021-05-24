@@ -3,11 +3,14 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tutorial/models/user.dart';
 import 'package:flutter_tutorial/services/database.dart';
 import 'package:flutter_tutorial/shared/constants.dart';
+import 'package:flutter_tutorial/shared/loading.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:provider/provider.dart';
 
 class AddItem extends StatefulWidget {
   @override
@@ -30,6 +33,9 @@ class _AddItemState extends State<AddItem> {
   double price;
   String error = '';
 
+  // loading
+  var loading = false;
+
   void takePhoto(ImageSource source) async {
       final pickedFile = await _picker.getImage(source: source);
       setState(() {
@@ -40,6 +46,9 @@ class _AddItemState extends State<AddItem> {
 
   @override
   Widget build(BuildContext context) {
+
+    final user = Provider.of<TheUser>(context);
+
     void _showImageOptions() {
       showModalBottomSheet(
         context: context,
@@ -81,7 +90,7 @@ class _AddItemState extends State<AddItem> {
 
     
 
-    return ListView(children: [
+    return loading ? Loading() : ListView(children: [
       Container(
         child: Form(
           key: _formKey,
@@ -91,11 +100,11 @@ class _AddItemState extends State<AddItem> {
                 children: [
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: _imageFile == null ? AssetImage('assets/default-item.jpg') : FileImage(_file),
+                    backgroundImage: _imageFile == null ? NetworkImage('https://semantic-ui.com/images/wireframe/image.png') : FileImage(_file),
                   ),
                   Positioned(
-                    bottom: 20,
-                    right: 20,
+                    bottom: 10,
+                    right: 14,
                     child: InkWell(
                       onTap: _showImageOptions,
                       child: Icon(
@@ -164,7 +173,11 @@ class _AddItemState extends State<AddItem> {
                 child: Text("Add item"),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
-                    await DatabaseService().updateProductData(1, description, productName, price);
+
+                    setState(() {
+                      loading = true;              
+                    });
+                    
                     if(_imageFile != null){
                       var snapshot = await _storage.ref()
                       .child('productsImages/$productName')
@@ -175,6 +188,8 @@ class _AddItemState extends State<AddItem> {
                         imageUrl = downloadUrl;
                       });
                     }
+                    String seller = await DatabaseService().getSeller(user.uid);
+                    await DatabaseService().updateProductData(1, description, productName, price, imageUrl, seller);
                     Navigator.pop(context);
                   }
                   

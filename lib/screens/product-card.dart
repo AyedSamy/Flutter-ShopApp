@@ -1,31 +1,26 @@
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/screens/product-detail.dart';
 
 class ProductCard extends StatelessWidget {
-  final _storage = FirebaseStorage.instance;
 
   final int id;
   final String name;
   final String description;
   final dynamic price;
+  final String imageUrl;
+  final String seller;
   final Function delete;
 
-  ProductCard({this.id, this.name, this.description, this.price, this.delete});
+  ProductCard({this.id, this.name, this.description, this.price, this.imageUrl, this.seller, this.delete});
 
   @override
   Widget build(BuildContext context) {
-
-    Future<NetworkImage> getNetworkImage(String productName) async {
-      var image = await _storage.ref().child('productsImages/$productName').getDownloadURL();
-      return NetworkImage(image);
-    }
 
     void _showDetailPanel() {
       showModalBottomSheet(context: context, builder: (context) {
         return Container(
           padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-          child: ProductDetail(id:id, name: name, description: description, price: price),
+          child: ProductDetail(id:id, name: name, description: description, price: price, imageUrl: imageUrl, seller: seller),
         );
       });
     }
@@ -44,8 +39,7 @@ class ProductCard extends StatelessWidget {
               ),
               Center(
                 child: CircleAvatar(
-                  backgroundImage:
-                      AssetImage('assets/kite-$id.jpg'), // GET IMAGE WITH ID
+                  backgroundImage: NetworkImage(imageUrl),
                   radius: 40.0,
                 ),
               ),
@@ -82,6 +76,16 @@ class ProductCard extends StatelessWidget {
                       icon: Icon(Icons.dehaze),
                       label: Text("See details")),
                 ],
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Text(
+                'Seller : $seller', // Seller
+                style: TextStyle(
+                  color: Colors.blue[800],
+                  letterSpacing: 1.0,
+                ),
               ),
               SizedBox(
                 height: 10.0,

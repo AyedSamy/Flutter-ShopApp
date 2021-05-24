@@ -67,6 +67,8 @@ class _ProductListState extends State<ProductList> {
                   name: searchedProducts[i].name,
                   price: searchedProducts[i].price,
                   description: searchedProducts[i].description,
+                  imageUrl: searchedProducts[i].imageUrl,
+                  seller: searchedProducts[i].seller,
                   delete: () => setState(() {
                     searchedProducts.remove(searchedProducts[i]);
                   }),

@@ -14,7 +14,7 @@ class DatabaseService {
 
   final CollectionReference userCartCollection =
       FirebaseFirestore.instance.collection("user_cart");
-  
+
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection("users");
 
@@ -33,12 +33,15 @@ class DatabaseService {
     });
   }
 
-  Future updateProductData(int id, String description, String name, dynamic price) async {
+  Future updateProductData(int id, String description, String name,
+      dynamic price, String imageUrl, String seller) async {
     return await productsCollection.doc().set({
       'id': id,
       'description': description,
       'name': name,
       'price': price,
+      'image_url': imageUrl,
+      'seller': seller,
     });
   }
 
@@ -51,6 +54,9 @@ class DatabaseService {
         name: doc["name"] ?? 'NA',
         description: doc["description"] ?? 'NA',
         price: doc["price"] ?? 0.0,
+        imageUrl: doc["image_url"] ??
+            'https://semantic-ui.com/images/wireframe/image.png',
+        seller: doc["seller"] ?? 'NA',
       );
     }).toList();
   }
@@ -59,9 +65,9 @@ class DatabaseService {
 
   UserCartData _userCartDataFromSnapsot(DocumentSnapshot snapshot) {
     return UserCartData(
-      uid:uid,
-      selectedProducts:snapshot['selected_products'],
-      totalCartPrice:snapshot['total_cart_price'],
+      uid: uid,
+      selectedProducts: snapshot['selected_products'],
+      totalCartPrice: snapshot['total_cart_price'],
     );
   }
 
@@ -74,7 +80,25 @@ class DatabaseService {
   // get user cart stream
 
   Stream<UserCartData> get userCartData {
-    return userCartCollection.doc(uid).snapshots().map(_userCartDataFromSnapsot);
+    return userCartCollection
+        .doc(uid)
+        .snapshots()
+        .map(_userCartDataFromSnapsot);
+  }
+
+  Future<String> getSeller(String uid) async {
+    String seller;
+    var docRef = usersCollection.doc(uid);
+    await docRef
+        .get()
+        .then((doc) {
+              seller = doc['email'];
+              print(seller);
+            })
+        .catchError((e) {
+      print(e);
+    });
+    return seller;
   }
 
 }

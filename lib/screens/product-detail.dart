@@ -10,9 +10,11 @@ class ProductDetail extends StatefulWidget {
   final int id;
   final String name;
   final String description;
+  final String imageUrl;
   final double price;
+  final String seller;
 
-  ProductDetail({this.id, this.name, this.description, this.price});
+  ProductDetail({this.id, this.name, this.description, this.price, this.imageUrl, this.seller});
 
   @override
   _ProductDetailState createState() => _ProductDetailState();
@@ -39,8 +41,8 @@ class _ProductDetailState extends State<ProductDetail> {
           SizedBox(
             height: 10,
           ),
-          Image.asset(
-            'assets/kite-${widget.id}.jpg',
+          Image.network(
+            widget.imageUrl,
             height: 100,
             width: 100,
           ),
@@ -90,8 +92,8 @@ class _ProductDetailState extends State<ProductDetail> {
                 SizedBox(
                   height: 10,
                 ),
-                Image.asset(
-                  'assets/kite-${widget.id}.jpg',
+                Image.network(
+                  widget.imageUrl,
                   height: 100,
                   width: 100,
                 ),
