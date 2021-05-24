@@ -16,24 +16,18 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final AuthService _auth = AuthService();
 
-  List<Product> products = [
-    Product(id: 1, name: "Classic kite", price: 34),
-    Product(id: 2, name: "Dragon kite", price: 40),
-    Product(id: 2, name: "Dragon kite", price: 40)
-  ];
-
   @override
   Widget build(BuildContext context) {
-
     void _showAddItemPanel() {
-      showModalBottomSheet(context: context, builder: (context) {
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: AddItem(),
-        );
-      });
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: AddItem(),
+            );
+          });
     }
-
 
     final user = Provider.of<TheUser>(context);
 
@@ -80,13 +74,12 @@ class _HomeState extends State<Home> {
             ProductList(),
           ],
         ),
-        floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: user != null ? FloatingActionButton.extended(
           onPressed: _showAddItemPanel,
           label: const Text('Add item'),
           icon: const Icon(Icons.add),
           backgroundColor: Colors.blue,
-        ),
-        
+        ) : SizedBox.shrink(),
       ),
     );
   }

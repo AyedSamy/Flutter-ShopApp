@@ -32,6 +32,16 @@ class DatabaseService {
       'lastname': lastname,
     });
   }
+
+  Future updateProductData(int id, String description, String name, dynamic price) async {
+    return await productsCollection.doc().set({
+      'id': id,
+      'description': description,
+      'name': name,
+      'price': price,
+    });
+  }
+
   // Product list from snapshot
 
   List<Product> _productListFromSnapshot(QuerySnapshot snapshot) {
@@ -40,7 +50,7 @@ class DatabaseService {
         id: doc["id"] ?? 0,
         name: doc["name"] ?? 'NA',
         description: doc["description"] ?? 'NA',
-        price: doc["price"] ?? 0,
+        price: doc["price"] ?? 0.0,
       );
     }).toList();
   }

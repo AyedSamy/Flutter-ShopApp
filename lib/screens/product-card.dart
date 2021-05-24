@@ -1,17 +1,25 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tutorial/screens/product-detail.dart';
 
 class ProductCard extends StatelessWidget {
+  final _storage = FirebaseStorage.instance;
+
   final int id;
   final String name;
   final String description;
-  final int price;
+  final dynamic price;
   final Function delete;
 
   ProductCard({this.id, this.name, this.description, this.price, this.delete});
 
   @override
   Widget build(BuildContext context) {
+
+    Future<NetworkImage> getNetworkImage(String productName) async {
+      var image = await _storage.ref().child('productsImages/$productName').getDownloadURL();
+      return NetworkImage(image);
+    }
 
     void _showDetailPanel() {
       showModalBottomSheet(context: context, builder: (context) {

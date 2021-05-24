@@ -10,7 +10,7 @@ class ProductDetail extends StatefulWidget {
   final int id;
   final String name;
   final String description;
-  final int price;
+  final double price;
 
   ProductDetail({this.id, this.name, this.description, this.price});
 
