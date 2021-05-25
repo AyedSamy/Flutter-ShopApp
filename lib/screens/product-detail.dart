@@ -150,6 +150,9 @@ class _ProductDetailState extends State<ProductDetail> {
                             return "1 item min.";
                           } else if (int.parse(val) > 99) {
                             return "99 items max.";
+                          } else if (userCartData.selectedProducts
+                              .containsKey(widget.name) && userCartData.selectedProducts[widget.name]['quantity'] + int.parse(val) > 99){
+                            return "99 items max.";
                           } else {
                             return null;
                           }
@@ -178,9 +181,9 @@ class _ProductDetailState extends State<ProductDetail> {
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           if (userCartData.selectedProducts
-                              .containsKey(widget.name)) {
+                              .containsKey(widget.name)) {                           
                             userCartData.selectedProducts[widget.name]['quantity'] += quantity;
-                            userCartData.selectedProducts[widget.name]['total_price'] += quantity * widget.price;
+                            userCartData.selectedProducts[widget.name]['total_price'] += quantity * widget.price;                           
                           } else {
                             userCartData.selectedProducts[widget.name] = {};
                             userCartData.selectedProducts[widget.name]['quantity'] = quantity;
