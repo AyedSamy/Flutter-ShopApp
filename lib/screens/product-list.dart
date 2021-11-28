@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:miaged/models/product.dart';
 import 'package:miaged/screens/product-card.dart';
-import 'package:miaged/screens/select-category.dart';
 import 'package:miaged/shared/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -11,17 +10,33 @@ class ProductList extends StatefulWidget {
 }
 
 class _ProductListState extends State<ProductList> {
+  final List<String> sizes = ['XS', 'S', 'M', 'L', 'XL'];
+  final List<String> categories = [
+    'All',
+    'Shirts',
+    'Pants',
+    'Hats',
+    'Jackets',
+    'Other'
+  ];
   String searchedItem = '';
-  String selectedCategory = '';
+  String selectedCategory = 'All'; // default
 
   List<Product> searchedProducts;
 
+  bool correspondingProduct(Product e) {
+    if (selectedCategory != 'All') {
+      return e.name.toLowerCase().contains(searchedItem.toLowerCase()) &&
+          e.category == selectedCategory;
+    } else {
+      return e.name.toLowerCase().contains(searchedItem.toLowerCase());
+    }
+  }
+
   void searchProduct(List<Product> products) {
     setState(() {
-      searchedProducts = products
-          .where(
-              (e) => e.name.toLowerCase().contains(searchedItem.toLowerCase()))
-          .toList();
+      searchedProducts =
+          products.where((e) => correspondingProduct(e)).toList();
       print(searchedProducts);
     });
   }
@@ -42,7 +57,52 @@ class _ProductListState extends State<ProductList> {
               ),
             ),
             actions: [
-              SelectCategoryWidget(),
+              //SelectCategoryWidget(),
+              Container(
+                margin: EdgeInsets.only(right: 20),
+                width: 100,
+                child: ButtonTheme(
+                  alignedDropdown: true,
+                  child: DropdownButton(
+                    dropdownColor: Colors.blue,
+                    icon: const Icon(
+                      Icons.arrow_downward,
+                      color: Colors.white,
+                    ),
+                    iconSize: 24,
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.white),
+                    underline: Container(
+                      height: 2,
+                      color: Colors.white,
+                    ),
+                    value: selectedCategory,
+                    items: categories
+                        .map(
+                          (cat) => DropdownMenuItem(
+                            value: cat,
+                            child: Text(
+                              '$cat',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    onChanged: (val) {
+                      setState(() {
+                        selectedCategory = val;
+                        if (selectedCategory != 'All') {
+                          searchProduct(products);
+                        } else {
+                          print("all selected");
+                        }
+                      });
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
           Row(
