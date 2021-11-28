@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "410056226782",
-    "project_id": "kite-shop-ccc48",
-    "storage_bucket": "kite-shop-ccc48.appspot.com"
+    "project_number": "532802089615",
+    "project_id": "miaged-2c420",
+    "storage_bucket": "miaged-2c420.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:410056226782:android:54cfe2eea929fccf84cf4f",
+        "mobilesdk_app_id": "1:532802089615:android:1e592d63d17709277376fa",
         "android_client_info": {
-          "package_name": "com.unice.ayed.kite_shop"
+          "package_name": "com.ayed.miaged"
         }
       },
       "oauth_client": [
         {
-          "client_id": "410056226782-3ebbv4k3j606gsbqls7m2p0o44ldnj2f.apps.googleusercontent.com",
+          "client_id": "532802089615-d9hen2948jkndacr63t9pn0ked4i7cft.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB-7p34xGZlEJNLwv0_2DmbVxCCnqq7NaQ"
+          "current_key": "AIzaSyBilXPRXIrMcN5NiLxOJgECtVFtFEl1Llc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "410056226782-3ebbv4k3j606gsbqls7m2p0o44ldnj2f.apps.googleusercontent.com",
+              "client_id": "532802089615-d9hen2948jkndacr63t9pn0ked4i7cft.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

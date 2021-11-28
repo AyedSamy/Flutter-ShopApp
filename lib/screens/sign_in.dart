@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/services/auth.dart';
-import 'package:flutter_tutorial/shared/constants.dart';
-import 'package:flutter_tutorial/shared/loading.dart';
+import 'package:miaged/services/auth.dart';
+import 'package:miaged/shared/constants.dart';
+import 'package:miaged/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -26,7 +26,7 @@ class _SignInState extends State<SignIn> {
         : Scaffold(
             backgroundColor: Colors.blue[200],
             appBar: AppBar(
-              title: Text("Sign in to our Shop"),
+              title: Text("Sign in to MIAGED"),
               backgroundColor: Colors.blue[800],
               elevation: 0.0,
             ),
@@ -84,8 +84,7 @@ class _SignInState extends State<SignIn> {
                                     "could not sign in with those credentials";
                               },
                             );
-                          }
-                          else {
+                          } else {
                             print(email);
                             print(password);
                             Navigator.pop(context);

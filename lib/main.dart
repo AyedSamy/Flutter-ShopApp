@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_tutorial/models/user.dart';
-import 'package:flutter_tutorial/screens/register.dart';
-import 'package:flutter_tutorial/screens/sign_in.dart';
-import 'package:flutter_tutorial/services/auth.dart';
+import 'package:miaged/models/user.dart';
+import 'package:miaged/screens/register.dart';
+import 'package:miaged/screens/sign_in.dart';
+import 'package:miaged/services/auth.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_tutorial/screens/home.dart';
+import 'package:miaged/screens/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,7 +14,7 @@ void main() async {
     initialData: null,
     value: AuthService().user,
     child: MaterialApp(
-      initialRoute: '/',
+      initialRoute: '/register',
       routes: {
         '/': (context) => App(),
         '/signIn': (context) => SignIn(),

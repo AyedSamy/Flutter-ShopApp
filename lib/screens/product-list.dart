@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/models/product.dart';
-import 'package:flutter_tutorial/screens/product-card.dart';
-import 'package:flutter_tutorial/shared/constants.dart';
+import 'package:miaged/models/product.dart';
+import 'package:miaged/screens/product-card.dart';
+import 'package:miaged/screens/select-category.dart';
+import 'package:miaged/shared/constants.dart';
 import 'package:provider/provider.dart';
 
 class ProductList extends StatefulWidget {
@@ -31,6 +32,13 @@ class _ProductListState extends State<ProductList> {
     return Expanded(
       child: Column(
         children: [
+          // AJOUTER BAR
+          AppBar(
+            title: const Text("Category"),
+            actions: [
+              SelectCategoryWidget(),
+            ],
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -69,6 +77,8 @@ class _ProductListState extends State<ProductList> {
                   description: searchedProducts[i].description,
                   imageUrl: searchedProducts[i].imageUrl,
                   seller: searchedProducts[i].seller,
+                  size: searchedProducts[i].size,
+                  category: searchedProducts[i].category,
                   delete: () => setState(() {
                     searchedProducts.remove(searchedProducts[i]);
                   }),

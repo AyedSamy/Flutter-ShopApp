@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/models/product.dart';
-import 'package:flutter_tutorial/models/user.dart';
-import 'package:flutter_tutorial/screens/add-item.dart';
-import 'package:flutter_tutorial/screens/cart.dart';
-import 'package:flutter_tutorial/screens/product-list.dart';
-import 'package:flutter_tutorial/services/auth.dart';
-import 'package:flutter_tutorial/services/database.dart';
+import 'package:miaged/models/product.dart';
+import 'package:miaged/models/user.dart';
+import 'package:miaged/screens/add-item.dart';
+import 'package:miaged/screens/cart.dart';
+import 'package:miaged/screens/product-list.dart';
+import 'package:miaged/services/auth.dart';
+import 'package:miaged/services/database.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         backgroundColor: Colors.blue[900],
         appBar: AppBar(
-          title: Text("Kite Shop"),
+          title: Text("Miaged"),
           backgroundColor: Colors.blue[800],
           elevation: 0.0,
           actions: [
@@ -70,16 +70,18 @@ class _HomeState extends State<Home> {
         ),
         body: Column(
           children: [
-            Cart(),
             ProductList(),
           ],
         ),
-        floatingActionButton: user != null ? FloatingActionButton.extended(
-          onPressed: _showAddItemPanel,
-          label: const Text('Add item'),
-          icon: const Icon(Icons.add),
-          backgroundColor: Colors.blue,
-        ) : SizedBox.shrink(),
+        floatingActionButton: user != null
+            ? FloatingActionButton.extended(
+                onPressed: _showAddItemPanel,
+                label: const Text('Add item'),
+                icon: const Icon(Icons.add),
+                backgroundColor: Colors.blue,
+              )
+            : SizedBox.shrink(),
+        bottomNavigationBar: Cart(),
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_tutorial/models/product.dart';
-import 'package:flutter_tutorial/models/user-cart.dart';
+import 'package:miaged/models/product.dart';
+import 'package:miaged/models/user-cart.dart';
 
 class DatabaseService {
   final String uid;
@@ -33,15 +33,16 @@ class DatabaseService {
     });
   }
 
-  Future updateProductData(int id, String description, String name,
-      dynamic price, String imageUrl, String seller) async {
+  Future updateProductData(String description, String name, dynamic price,
+      String imageUrl, String seller, String size, String category) async {
     return await productsCollection.doc().set({
-      'id': id,
       'description': description,
       'name': name,
       'price': price,
       'image_url': imageUrl,
       'seller': seller,
+      'size': size,
+      'category': category,
     });
   }
 
@@ -50,13 +51,14 @@ class DatabaseService {
   List<Product> _productListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return Product(
-        id: doc["id"] ?? 0,
         name: doc["name"] ?? 'NA',
         description: doc["description"] ?? 'NA',
         price: doc["price"] ?? 0.0,
         imageUrl: doc["image_url"] ??
             'https://semantic-ui.com/images/wireframe/image.png',
         seller: doc["seller"] ?? 'NA',
+        size: doc["size"] ?? 'NA',
+        category: doc["category"] ?? 'NA',
       );
     }).toList();
   }
@@ -89,16 +91,12 @@ class DatabaseService {
   Future<String> getSeller(String uid) async {
     String seller;
     var docRef = usersCollection.doc(uid);
-    await docRef
-        .get()
-        .then((doc) {
-              seller = doc['email'];
-              print(seller);
-            })
-        .catchError((e) {
+    await docRef.get().then((doc) {
+      seller = doc['email'];
+      print(seller);
+    }).catchError((e) {
       print(e);
     });
     return seller;
   }
-
 }

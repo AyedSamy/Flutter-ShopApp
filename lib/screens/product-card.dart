@@ -1,28 +1,48 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/screens/product-detail.dart';
+import 'package:miaged/screens/product-detail.dart';
 
 class ProductCard extends StatelessWidget {
-
   final int id;
   final String name;
   final String description;
   final dynamic price;
   final String imageUrl;
   final String seller;
+  final String size;
+  final String category;
   final Function delete;
 
-  ProductCard({this.id, this.name, this.description, this.price, this.imageUrl, this.seller, this.delete});
+  ProductCard(
+      {this.id,
+      this.name,
+      this.description,
+      this.price,
+      this.imageUrl,
+      this.seller,
+      this.size,
+      this.category,
+      this.delete});
 
   @override
   Widget build(BuildContext context) {
-
     void _showDetailPanel() {
-      showModalBottomSheet(context: context, builder: (context) {
-        return Container(
-          padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-          child: ProductDetail(id:id, name: name, description: description, price: price, imageUrl: imageUrl, seller: seller),
-        );
-      });
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+              child: ProductDetail(
+                name: name,
+                description: description,
+                price: price,
+                imageUrl: imageUrl,
+                seller: seller,
+                size: size,
+                category: category,
+              ),
+            );
+          });
     }
 
     return Container(
@@ -70,7 +90,7 @@ class ProductCard extends StatelessWidget {
                     width: 10,
                   ),
                   ElevatedButton.icon(
-                      onPressed: (){
+                      onPressed: () {
                         _showDetailPanel();
                       },
                       icon: Icon(Icons.dehaze),

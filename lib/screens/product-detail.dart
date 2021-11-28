@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tutorial/models/user-cart.dart';
-import 'package:flutter_tutorial/models/user.dart';
-import 'package:flutter_tutorial/services/database.dart';
-import 'package:flutter_tutorial/shared/loading.dart';
+import 'package:miaged/models/user-cart.dart';
+import 'package:miaged/models/user.dart';
+import 'package:miaged/services/database.dart';
+import 'package:miaged/shared/loading.dart';
 import 'package:provider/provider.dart';
 
 class ProductDetail extends StatefulWidget {
-  final int id;
   final String name;
   final String description;
   final String imageUrl;
   final double price;
   final String seller;
+  final String size;
+  final String category;
 
-  ProductDetail({this.id, this.name, this.description, this.price, this.imageUrl, this.seller});
+  ProductDetail(
+      {this.name,
+      this.description,
+      this.price,
+      this.imageUrl,
+      this.seller,
+      this.size,
+      this.category});
 
   @override
   _ProductDetailState createState() => _ProductDetailState();
@@ -29,7 +37,8 @@ class _ProductDetailState extends State<ProductDetail> {
   Widget build(BuildContext context) {
     final user = Provider.of<TheUser>(context);
 
-    if (user == null) { // If no user is logged, we invite the user to create an account to make an order
+    if (user == null) {
+      // If no user is logged, we invite the user to create an account to make an order
       return ListView(
         children: [
           Center(
@@ -74,7 +83,8 @@ class _ProductDetailState extends State<ProductDetail> {
       );
     }
 
-    return StreamBuilder<UserCartData>( // if a user is logged, we retrieve his user cart data from firebase thanks to StreamBuilder and a get method in database service
+    return StreamBuilder<UserCartData>(
+      // if a user is logged, we retrieve his user cart data from firebase thanks to StreamBuilder and a get method in database service
       stream: DatabaseService(uid: user.uid).userCartData,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
@@ -112,7 +122,41 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                       TextSpan(text: "${widget.description}"),
                     ],
-                  ),  
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.black),
+                    children: [
+                      TextSpan(
+                        text: 'Category : ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(text: "${widget.category}"),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.black),
+                    children: [
+                      TextSpan(
+                        text: 'Size : ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(text: "${widget.size}"),
+                    ],
+                  ),
                 ),
                 SizedBox(
                   height: 10,
@@ -129,9 +173,11 @@ class _ProductDetailState extends State<ProductDetail> {
                       ),
                       TextSpan(text: "${widget.price}€"),
                     ],
-                  ),  
+                  ),
                 ),
-                SizedBox(height: 15,),
+                SizedBox(
+                  height: 15,
+                ),
                 Center(
                   child: Text(
                     "Quantity in your cart : ${userCartData.selectedProducts.containsKey(widget.name) ? userCartData.selectedProducts[widget.name]['quantity'] : 0}",
@@ -151,7 +197,11 @@ class _ProductDetailState extends State<ProductDetail> {
                           } else if (int.parse(val) > 99) {
                             return "99 items max.";
                           } else if (userCartData.selectedProducts
-                              .containsKey(widget.name) && userCartData.selectedProducts[widget.name]['quantity'] + int.parse(val) > 99){
+                                  .containsKey(widget.name) &&
+                              userCartData.selectedProducts[widget.name]
+                                          ['quantity'] +
+                                      int.parse(val) >
+                                  99) {
                             return "99 items max.";
                           } else {
                             return null;
@@ -181,22 +231,30 @@ class _ProductDetailState extends State<ProductDetail> {
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           if (userCartData.selectedProducts
-                              .containsKey(widget.name)) {                           
-                            userCartData.selectedProducts[widget.name]['quantity'] += quantity;
-                            userCartData.selectedProducts[widget.name]['total_price'] += quantity * widget.price;                           
+                              .containsKey(widget.name)) {
+                            userCartData.selectedProducts[widget.name]
+                                ['quantity'] += quantity;
+                            userCartData.selectedProducts[widget.name]
+                                ['total_price'] += quantity * widget.price;
                           } else {
                             userCartData.selectedProducts[widget.name] = {};
-                            userCartData.selectedProducts[widget.name]['quantity'] = quantity;
-                            userCartData.selectedProducts[widget.name]['total_price'] = quantity * widget.price;
+                            userCartData.selectedProducts[widget.name]
+                                ['quantity'] = quantity;
+                            userCartData.selectedProducts[widget.name]
+                                ['total_price'] = quantity * widget.price;
                           }
                           double totalCartPrice = 0.0;
-                          userCartData.selectedProducts[widget.name]['unit_price'] = widget.price;
-                          userCartData.selectedProducts.forEach((productName, info) {
-                            totalCartPrice += info['unit_price'] * info['quantity'];
+                          userCartData.selectedProducts[widget.name]
+                              ['unit_price'] = widget.price;
+                          userCartData.selectedProducts
+                              .forEach((productName, info) {
+                            totalCartPrice +=
+                                info['unit_price'] * info['quantity'];
                           });
                           userCartData.totalCartPrice = totalCartPrice;
-                          DatabaseService(uid: user.uid)
-                              .updateUserCartData(userCartData.selectedProducts, userCartData.totalCartPrice);
+                          DatabaseService(uid: user.uid).updateUserCartData(
+                              userCartData.selectedProducts,
+                              userCartData.totalCartPrice);
                           //Navigator.pop(context);
                         }
                       },
@@ -210,14 +268,23 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 ElevatedButton.icon(
                     onPressed: () async {
-                      if(userCartData.selectedProducts.containsKey(widget.name)){
-                        userCartData.totalCartPrice -= userCartData.selectedProducts[widget.name]['quantity'] * userCartData.selectedProducts[widget.name]['unit_price'];
+                      if (userCartData.selectedProducts
+                          .containsKey(widget.name)) {
+                        userCartData.totalCartPrice -= userCartData
+                                .selectedProducts[widget.name]['quantity'] *
+                            userCartData.selectedProducts[widget.name]
+                                ['unit_price'];
                         userCartData.selectedProducts.remove(widget.name);
-                        DatabaseService(uid: user.uid).updateUserCartData(userCartData.selectedProducts, userCartData.totalCartPrice);
+                        DatabaseService(uid: user.uid).updateUserCartData(
+                            userCartData.selectedProducts,
+                            userCartData.totalCartPrice);
                       }
                     },
                     icon: Icon(Icons.remove),
-                    label: Text("Remove from cart"))
+                    label: Text("Remove from cart")),
+                SizedBox(
+                  height: 200,
+                ),
               ],
             ),
           );

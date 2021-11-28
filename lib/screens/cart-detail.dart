@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/models/user-cart.dart';
-import 'package:flutter_tutorial/models/user.dart';
-import 'package:flutter_tutorial/services/database.dart';
+import 'package:miaged/models/user-cart.dart';
+import 'package:miaged/models/user.dart';
+import 'package:miaged/services/database.dart';
 import 'package:provider/provider.dart';
+import 'dart:math';
+
+double roundDouble(double value, int places) {
+  double mod = pow(10.0, places);
+  return ((value * mod).round().toDouble() / mod);
+}
 
 class CartDetail extends StatefulWidget {
   final UserCartData userCartData;
@@ -39,12 +45,20 @@ class _CartDetailState extends State<CartDetail> {
                   icon: Icon(Icons.delete),
                   onPressed: () {
                     if (user != null) {
-                      widget.userCartData.totalCartPrice -= widget.userCartData.selectedProducts[selectedProductsNames[i]]['quantity'] * widget.userCartData.selectedProducts[selectedProductsNames[i]]['unit_price'];
+                      widget.userCartData.totalCartPrice -= widget.userCartData
+                                  .selectedProducts[selectedProductsNames[i]]
+                              ['quantity'] *
+                          widget.userCartData
+                                  .selectedProducts[selectedProductsNames[i]]
+                              ['unit_price'];
                       setState(() {
-                        widget.userCartData.selectedProducts.remove(selectedProductsNames[i]);                 
+                        widget.userCartData.selectedProducts
+                            .remove(selectedProductsNames[i]);
                       });
-                      
-                      DatabaseService(uid: user.uid).updateUserCartData(widget.userCartData.selectedProducts, widget.userCartData.totalCartPrice);
+
+                      DatabaseService(uid: user.uid).updateUserCartData(
+                          widget.userCartData.selectedProducts,
+                          widget.userCartData.totalCartPrice);
                     }
                   },
                 ),
@@ -59,7 +73,8 @@ class _CartDetailState extends State<CartDetail> {
         ),
         Container(
             margin: EdgeInsets.only(bottom: 30),
-            child: Text("Total : ${widget.userCartData.totalCartPrice}€"))
+            child: Text(
+                "Total : ${roundDouble(widget.userCartData.totalCartPrice, 2)}€"))
       ],
     );
   }

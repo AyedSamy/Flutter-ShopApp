@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tutorial/models/user-cart.dart';
-import 'package:flutter_tutorial/models/user.dart';
-import 'package:flutter_tutorial/screens/cart-detail.dart';
-import 'package:flutter_tutorial/services/database.dart';
-import 'package:flutter_tutorial/shared/loading.dart';
+import 'package:miaged/models/user-cart.dart';
+import 'package:miaged/models/user.dart';
+import 'package:miaged/screens/cart-detail.dart';
+import 'package:miaged/services/database.dart';
+import 'package:miaged/shared/loading.dart';
 import 'package:provider/provider.dart';
+import 'dart:math';
+
+double roundDouble(double value, int places) {
+  double mod = pow(10.0, places);
+  return ((value * mod).round().toDouble() / mod);
+}
 
 class Cart extends StatefulWidget {
   @override
@@ -14,14 +20,15 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
-
     void _showCartDetailPanel(UserCartData userCartData) {
-      showModalBottomSheet(context: context, builder: (context) {
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 20),
-          child: CartDetail(userCartData),
-        );
-      });
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: CartDetail(userCartData),
+            );
+          });
     }
 
     final user = Provider.of<TheUser>(context);
@@ -59,7 +66,7 @@ class _CartState extends State<Cart> {
                       style: TextStyle(fontWeight: FontWeight.w600),
                     ),
                     TextSpan(
-                      text: "${userCartData.totalCartPrice}€",
+                      text: "${roundDouble(userCartData.totalCartPrice, 2)}€",
                       style: TextStyle(),
                     ),
                   ],
