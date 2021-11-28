@@ -26,11 +26,19 @@ class _AddItemState extends State<AddItem> {
   String imageUrl;
 
   final _formKey = GlobalKey<FormState>();
+  final List<String> sizes = ['XS', 'S', 'M', 'L', 'XL'];
+  final List<String> categories = [
+    'Shirts',
+    'Pants',
+    'Hats',
+    'Jackets',
+    'Other'
+  ];
 
   //text field state
   String productName = '';
-  String size = '';
-  String category = '';
+  String size = 'M'; // default
+  String category = 'Shirts'; // default
   String brand = '';
   String description = '';
   double price;
@@ -138,11 +146,17 @@ class _AddItemState extends State<AddItem> {
                     SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                      decoration:
-                          textInputDecoration.copyWith(hintText: 'Size'),
-                      validator: (val) =>
-                          val.isEmpty ? "Enter the product size" : null,
+                    DropdownButtonFormField(
+                      decoration: textInputDecoration,
+                      value: size ?? 'M',
+                      items: sizes
+                          .map(
+                            (sz) => DropdownMenuItem(
+                              value: sz,
+                              child: Text('$sz'),
+                            ),
+                          )
+                          .toList(),
                       onChanged: (val) {
                         setState(() {
                           size = val;
@@ -152,11 +166,17 @@ class _AddItemState extends State<AddItem> {
                     SizedBox(
                       height: 20,
                     ),
-                    TextFormField(
-                      decoration: textInputDecoration.copyWith(
-                          hintText: 'Product category'),
-                      validator: (val) =>
-                          val.isEmpty ? "Enter the product category" : null,
+                    DropdownButtonFormField(
+                      decoration: textInputDecoration,
+                      value: category ?? 'Shirts',
+                      items: categories
+                          .map(
+                            (cat) => DropdownMenuItem(
+                              value: cat,
+                              child: Text('$cat'),
+                            ),
+                          )
+                          .toList(),
                       onChanged: (val) {
                         setState(() {
                           category = val;

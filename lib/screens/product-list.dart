@@ -12,6 +12,7 @@ class ProductList extends StatefulWidget {
 
 class _ProductListState extends State<ProductList> {
   String searchedItem = '';
+  String selectedCategory = '';
 
   List<Product> searchedProducts;
 

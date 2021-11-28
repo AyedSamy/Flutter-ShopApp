@@ -77,6 +77,16 @@ class ProductCard extends StatelessWidget {
               SizedBox(
                 height: 10.0,
               ),
+              Text(
+                'Category : $category', // PRODUCT CATEGORY
+                style: TextStyle(
+                  color: Colors.blue[800],
+                  letterSpacing: 1.0,
+                ),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

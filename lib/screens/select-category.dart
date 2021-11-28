@@ -38,7 +38,7 @@ class _SelectCategoryWidgetState extends State<SelectCategoryWidget> {
               dropdownValue = newValue;
             });
           },
-          items: <String>['Shirts', 'Pants', 'Free', 'Four']
+          items: <String>['Shirts', 'Pants', 'Hats', 'Jackets', 'Other']
               .map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
