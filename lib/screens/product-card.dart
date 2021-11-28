@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:miaged/screens/product-detail.dart';
 
 class ProductCard extends StatelessWidget {
-  final int id;
   final String name;
   final String description;
   final dynamic price;
@@ -11,17 +10,18 @@ class ProductCard extends StatelessWidget {
   final String seller;
   final String size;
   final String category;
+  final String brand;
   final Function delete;
 
   ProductCard(
-      {this.id,
-      this.name,
+      {this.name,
       this.description,
       this.price,
       this.imageUrl,
       this.seller,
       this.size,
       this.category,
+      this.brand,
       this.delete});
 
   @override
@@ -40,6 +40,7 @@ class ProductCard extends StatelessWidget {
                 seller: seller,
                 size: size,
                 category: category,
+                brand: brand,
               ),
             );
           });
@@ -67,7 +68,7 @@ class ProductCard extends StatelessWidget {
                 height: 10.0,
               ),
               Text(
-                '$name', // PRODUCT NAME
+                '$name | $size', // PRODUCT NAME AND SIZE
                 style: TextStyle(
                   color: Colors.blue[800],
                   letterSpacing: 1.0,

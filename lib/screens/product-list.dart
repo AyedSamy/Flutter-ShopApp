@@ -34,7 +34,12 @@ class _ProductListState extends State<ProductList> {
         children: [
           // AJOUTER BAR
           AppBar(
-            title: const Text("Category"),
+            title: Text(
+              "Category",
+              style: TextStyle(
+                fontSize: 14,
+              ),
+            ),
             actions: [
               SelectCategoryWidget(),
             ],
@@ -71,7 +76,6 @@ class _ProductListState extends State<ProductList> {
               itemCount: searchedProducts.length,
               itemBuilder: (context, i) {
                 return ProductCard(
-                  id: searchedProducts[i].id,
                   name: searchedProducts[i].name,
                   price: searchedProducts[i].price,
                   description: searchedProducts[i].description,
@@ -79,6 +83,7 @@ class _ProductListState extends State<ProductList> {
                   seller: searchedProducts[i].seller,
                   size: searchedProducts[i].size,
                   category: searchedProducts[i].category,
+                  brand: searchedProducts[i].brand,
                   delete: () => setState(() {
                     searchedProducts.remove(searchedProducts[i]);
                   }),

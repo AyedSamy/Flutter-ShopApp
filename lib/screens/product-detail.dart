@@ -14,6 +14,7 @@ class ProductDetail extends StatefulWidget {
   final String seller;
   final String size;
   final String category;
+  final String brand;
 
   ProductDetail(
       {this.name,
@@ -22,7 +23,8 @@ class ProductDetail extends StatefulWidget {
       this.imageUrl,
       this.seller,
       this.size,
-      this.category});
+      this.category,
+      this.brand});
 
   @override
   _ProductDetailState createState() => _ProductDetailState();
@@ -155,6 +157,23 @@ class _ProductDetailState extends State<ProductDetail> {
                         ),
                       ),
                       TextSpan(text: "${widget.size}"),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                RichText(
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.black),
+                    children: [
+                      TextSpan(
+                        text: 'Brand : ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      TextSpan(text: "${widget.brand}"),
                     ],
                   ),
                 ),

@@ -31,6 +31,7 @@ class _AddItemState extends State<AddItem> {
   String productName = '';
   String size = '';
   String category = '';
+  String brand = '';
   String description = '';
   double price;
   String error = '';
@@ -166,6 +167,20 @@ class _AddItemState extends State<AddItem> {
                       height: 20,
                     ),
                     TextFormField(
+                      decoration: textInputDecoration.copyWith(
+                          hintText: 'Product brand'),
+                      validator: (val) =>
+                          val.isEmpty ? "Enter the product brand" : null,
+                      onChanged: (val) {
+                        setState(() {
+                          brand = val;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
                       validator: (val) => val.isEmpty ? "Enter a price" : null,
                       onChanged: (val) {
                         setState(() {
@@ -232,7 +247,8 @@ class _AddItemState extends State<AddItem> {
                               imageUrl,
                               seller,
                               size,
-                              category);
+                              category,
+                              brand);
                           Navigator.pop(context);
                         }
                       },

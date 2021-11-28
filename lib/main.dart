@@ -14,7 +14,7 @@ void main() async {
     initialData: null,
     value: AuthService().user,
     child: MaterialApp(
-      initialRoute: '/register',
+      initialRoute: '/signIn',
       routes: {
         '/': (context) => App(),
         '/signIn': (context) => SignIn(),

@@ -1,5 +1,4 @@
 class Product {
-  final int id;
   final String name;
   final String description;
   final dynamic price;
@@ -10,8 +9,7 @@ class Product {
   final String brand;
 
   Product(
-      {this.id,
-      this.name,
+      {this.name,
       this.description,
       this.price,
       this.imageUrl,

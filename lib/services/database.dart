@@ -33,8 +33,15 @@ class DatabaseService {
     });
   }
 
-  Future updateProductData(String description, String name, dynamic price,
-      String imageUrl, String seller, String size, String category) async {
+  Future updateProductData(
+      String description,
+      String name,
+      dynamic price,
+      String imageUrl,
+      String seller,
+      String size,
+      String category,
+      String brand) async {
     return await productsCollection.doc().set({
       'description': description,
       'name': name,
@@ -43,6 +50,7 @@ class DatabaseService {
       'seller': seller,
       'size': size,
       'category': category,
+      'brand': brand
     });
   }
 
@@ -59,6 +67,7 @@ class DatabaseService {
         seller: doc["seller"] ?? 'NA',
         size: doc["size"] ?? 'NA',
         category: doc["category"] ?? 'NA',
+        brand: doc["brand"] ?? 'NA',
       );
     }).toList();
   }
