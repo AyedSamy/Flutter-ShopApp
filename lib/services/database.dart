@@ -108,4 +108,18 @@ class DatabaseService {
     });
     return seller;
   }
+
+  Future<List<String>> getIdentity(String uid) async {
+    String firstname;
+    String lastname;
+    var docRef = usersCollection.doc(uid);
+    await docRef.get().then((doc) {
+      firstname = doc['firstname'];
+      lastname = doc['lastname'];
+      print(firstname);
+    }).catchError((e) {
+      print(e);
+    });
+    return [firstname, lastname];
+  }
 }

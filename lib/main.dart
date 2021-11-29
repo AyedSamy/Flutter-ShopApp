@@ -6,6 +6,7 @@ import 'package:miaged/screens/sign_in.dart';
 import 'package:miaged/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'package:miaged/screens/home.dart';
+import 'package:miaged/screens/profile.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,8 @@ void main() async {
       routes: {
         '/': (context) => App(),
         '/signIn': (context) => SignIn(),
-        '/register': (context) => Register()
+        '/register': (context) => Register(),
+        '/profile': (context) => Profile()
       },
     ),
   ));

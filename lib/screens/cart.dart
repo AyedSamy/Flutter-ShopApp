@@ -55,21 +55,24 @@ class _CartState extends State<Cart> {
                   elevation: MaterialStateProperty.all(0),
                 ),
               ),
-              RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                    color: Colors.white,
+              Container(
+                margin: EdgeInsets.only(right: 20),
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Total : ',
+                        style: TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      TextSpan(
+                        text: "${roundDouble(userCartData.totalCartPrice, 2)}€",
+                        style: TextStyle(),
+                      ),
+                    ],
                   ),
-                  children: [
-                    TextSpan(
-                      text: 'Total : ',
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    TextSpan(
-                      text: "${roundDouble(userCartData.totalCartPrice, 2)}€",
-                      style: TextStyle(),
-                    ),
-                  ],
                 ),
               ),
             ],

@@ -41,6 +41,21 @@ class _HomeState extends State<Home> {
           backgroundColor: Colors.blue[800],
           elevation: 0.0,
           actions: [
+            if (user != null)
+              ElevatedButton.icon(
+                onPressed: () {
+                  if (user != null) {
+                    Navigator.pushNamed(
+                        context, "/profile"); // ASYNC AJOUTER ARGUMENT
+                  }
+                },
+                icon: Icon(Icons.account_circle),
+                label: Text("Profile"),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue[800]),
+                  elevation: MaterialStateProperty.all(0),
+                ),
+              ),
             ElevatedButton.icon(
               onPressed: () async {
                 user == null
