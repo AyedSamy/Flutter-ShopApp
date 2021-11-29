@@ -43,10 +43,24 @@ class _HomeState extends State<Home> {
           actions: [
             if (user != null)
               ElevatedButton.icon(
-                onPressed: () {
+                onPressed: () async {
                   if (user != null) {
+                    List<dynamic> id =
+                        await DatabaseService().getIdentity(user.uid);
                     Navigator.pushNamed(
-                        context, "/profile"); // ASYNC AJOUTER ARGUMENT
+                      context,
+                      "/profile",
+                      arguments: {
+                        'firstname': id[0],
+                        'lastname': id[1],
+                        'email': id[2],
+                        'password': id[3],
+                        "birthday": id[4],
+                        "address": id[5],
+                        "postalcode": id[6],
+                        "city": id[7],
+                      },
+                    ); // ASYNC AJOUTER ARGUMENT
                   }
                 },
                 icon: Icon(Icons.account_circle),

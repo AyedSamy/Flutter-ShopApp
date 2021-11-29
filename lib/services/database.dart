@@ -25,11 +25,24 @@ class DatabaseService {
     });
   }
 
-  Future updateUserData(String email, String firstname, String lastname) async {
+  Future updateUserData(
+      String email,
+      String firstname,
+      String lastname,
+      String password,
+      DateTime birthday,
+      String address,
+      String postalcode,
+      String city) async {
     return await usersCollection.doc(uid).set({
       'email': email,
       'firstname': firstname,
       'lastname': lastname,
+      'password': password,
+      'birthday': birthday,
+      'address': address,
+      'postalcode': postalcode,
+      'city': city,
     });
   }
 
@@ -109,17 +122,38 @@ class DatabaseService {
     return seller;
   }
 
-  Future<List<String>> getIdentity(String uid) async {
+  Future<List<dynamic>> getIdentity(String uid) async {
     String firstname;
     String lastname;
+    String email;
+    String password;
+    DateTime birthday;
+    String address;
+    String postalcode;
+    String city;
     var docRef = usersCollection.doc(uid);
     await docRef.get().then((doc) {
       firstname = doc['firstname'];
       lastname = doc['lastname'];
+      email = doc['email'];
+      password = doc['password'];
+      birthday = doc['birthday'].toDate();
+      address = doc['address'];
+      postalcode = doc['postalcode'];
+      city = doc['city'];
       print(firstname);
     }).catchError((e) {
       print(e);
     });
-    return [firstname, lastname];
+    return [
+      firstname,
+      lastname,
+      email,
+      password,
+      birthday,
+      address,
+      postalcode,
+      city
+    ];
   }
 }

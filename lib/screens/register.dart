@@ -24,6 +24,11 @@ class _RegisterState extends State<Register> {
   String email = '';
   String password = '';
   String error = '';
+  //default fields
+  DateTime birthday = DateTime.utc(1970, 1, 1);
+  String address = 'NA';
+  String postalcode = 'NA';
+  String city = 'NA';
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +117,14 @@ class _RegisterState extends State<Register> {
                             });
                             dynamic result =
                                 await _auth.registerWithEmailAndPassword(
-                                    email, password, firstname, lastname);
+                                    email,
+                                    password,
+                                    firstname,
+                                    lastname,
+                                    birthday,
+                                    address,
+                                    postalcode,
+                                    city);
                             if (result == null) {
                               setState(() {
                                 loading = false;
