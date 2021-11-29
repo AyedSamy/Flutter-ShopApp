@@ -47,11 +47,20 @@ class AuthService {
   // update email & password
 
   Future updateEmailAndPassword(String email, String password) async {
-    // Create a credential
-    AuthCredential credential =
-        EmailAuthProvider.credential(email: email, password: password);
-    // Reauthenticate
-    await _auth.currentUser.reauthenticateWithCredential(credential);
+    try {
+      // Create a credential
+      /* AuthCredential credential =
+          EmailAuthProvider.credential(email: email, password: password); */
+      // Reauthenticate
+      //await _auth.currentUser.reauthenticateWithCredential(credential);
+      await _auth.currentUser.updateEmail(email);
+      await _auth.currentUser.updatePassword(password);
+      print("updated email pass");
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 
   // register with email & password

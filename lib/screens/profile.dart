@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:miaged/services/auth.dart';
+import 'package:miaged/services/database.dart';
 import 'package:miaged/shared/constants.dart';
 import 'package:miaged/shared/loading.dart';
 import 'package:date_field/date_field.dart';
@@ -13,22 +14,31 @@ class _ProfileState extends State<Profile> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
-  //text field state
-  String firstname = '';
-  String lastname = '';
-  String email = '';
-  String password = '';
-  String address = '';
-  String postalcode = '';
-  String city = '';
+  String message = '';
+  // initial values
+  String firstname;
+  String lastname;
+  String email;
+  String password;
   DateTime birthday;
-  String error = '';
-
-  //String seller = await DatabaseService().getSeller(user.uid);
+  String address;
+  String postalcode;
+  String city;
 
   @override
   Widget build(BuildContext context) {
     final Map data = ModalRoute.of(context).settings.arguments;
+
+    // initial route args values
+    String firstname = data["firstname"];
+    String lastname = data["lastname"];
+    String email = data["email"];
+    String password = data["password"];
+    DateTime birthday = data["birthday"];
+    String address = data["address"];
+    String postalcode = data["postalcode"];
+    String city = data["city"];
+
     return loading
         ? Loading()
         : Scaffold(
@@ -45,17 +55,44 @@ class _ProfileState extends State<Profile> {
                       setState(() {
                         loading = true;
                       });
-                      dynamic result =
-                          await _auth.updateEmailAndPassword(email, password);
+                      bool updateLogs = true;
+                      bool updateUser = true;
+                      dynamic result = true;
+                      if (this.email == null && this.password == null) {
+                        updateLogs = false;
+                      }
+                      if (updateLogs == true) {
+                        print(this.email == null ? email : this.email);
+                        print(this.password == null ? password : this.password);
+                        result = await _auth.updateEmailAndPassword(
+                            this.email == null ? email : this.email,
+                            this.password == null ? password : this.password);
+                      }
                       if (result == null) {
+                        updateUser = false;
                         setState(() {
                           loading = false;
-                          error = "Please supply a valid email";
+                          message = "Please supply a valid email";
                         });
-                      } else {
-                        print(email);
-                        print(password);
-                        Navigator.pop(context);
+                      }
+                      if (updateUser == true) {
+                        await DatabaseService(uid: data["uid"]).updateUserData(
+                            this.email == null ? email : this.email,
+                            this.firstname == null ? firstname : this.firstname,
+                            this.lastname == null ? lastname : this.lastname,
+                            this.password == null ? password : this.password,
+                            this.birthday == null ? birthday : this.birthday,
+                            this.address == null ? address : this.address,
+                            this.postalcode == null
+                                ? postalcode
+                                : this.postalcode,
+                            this.city == null ? city : this.city);
+                        setState(() {
+                          loading = false;
+                          message = "Your profile has been updated";
+                        });
+                        print("updated user");
+                        //Navigator.pop(context);
                       }
                     }
                   },
@@ -71,11 +108,18 @@ class _ProfileState extends State<Profile> {
                   key: _formKey,
                   child: Column(
                     children: [
+                      Text(
+                        message,
+                        style: TextStyle(
+                          color: Colors.purple,
+                          fontSize: 14,
+                        ),
+                      ),
                       SizedBox(
-                        height: 20,
+                        height: 12,
                       ),
                       TextFormField(
-                        initialValue: data['firstname'],
+                        initialValue: firstname,
                         decoration: textInputDecoration.copyWith(
                           focusedBorder: outlineWhite,
                           hintText: 'First name',
@@ -87,15 +131,15 @@ class _ProfileState extends State<Profile> {
                             val.isEmpty ? "Enter your first name" : null,
                         onChanged: (val) {
                           setState(() {
-                            firstname = val;
+                            this.firstname = val;
                           });
                         },
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 12,
                       ),
                       TextFormField(
-                        initialValue: data['lastname'],
+                        initialValue: lastname,
                         decoration: textInputDecoration.copyWith(
                           focusedBorder: outlineWhite,
                           hintText: 'Last name',
@@ -107,15 +151,15 @@ class _ProfileState extends State<Profile> {
                             val.isEmpty ? "Enter your last name" : null,
                         onChanged: (val) {
                           setState(() {
-                            lastname = val;
+                            this.lastname = val;
                           });
                         },
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 12,
                       ),
                       TextFormField(
-                        initialValue: data['email'],
+                        initialValue: email,
                         decoration: textInputDecoration.copyWith(
                           focusedBorder: outlineWhite,
                           hintText: 'Email',
@@ -127,16 +171,17 @@ class _ProfileState extends State<Profile> {
                             val.isEmpty ? "Enter your email" : null,
                         onChanged: (val) {
                           setState(() {
-                            email = val;
+                            this.email = val;
+                            print(this.email);
                           });
                         },
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 12,
                       ),
                       TextFormField(
                         obscureText: true,
-                        initialValue: data['password'],
+                        initialValue: password,
                         decoration: textInputDecoration.copyWith(
                           focusedBorder: outlineWhite,
                           hintText: 'Password',
@@ -145,17 +190,18 @@ class _ProfileState extends State<Profile> {
                           labelStyle: TextStyle(height: 4),
                         ),
                         validator: (val) =>
-                            val.isEmpty ? "Enter your password" : null,
+                            val.length < 6 ? "Enter a 6+ chars password" : null,
                         onChanged: (val) {
                           setState(() {
-                            password = val;
+                            this.password = val;
                           });
                         },
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 12,
                       ),
                       DateTimeFormField(
+                        initialValue: birthday,
                         mode: DateTimeFieldPickerMode.date,
                         decoration: textInputDecoration.copyWith(
                           focusedBorder: outlineWhite,
@@ -164,12 +210,18 @@ class _ProfileState extends State<Profile> {
                           labelText: 'Birthday',
                           labelStyle: TextStyle(height: 4),
                         ),
+                        validator: (DateTime e) {
+                          return null;
+                        },
+                        onDateSelected: (DateTime val) {
+                          this.birthday = val;
+                        },
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 12,
                       ),
                       TextFormField(
-                        initialValue: data['address'],
+                        initialValue: address,
                         decoration: textInputDecoration.copyWith(
                           focusedBorder: outlineWhite,
                           hintText: 'Address',
@@ -181,22 +233,49 @@ class _ProfileState extends State<Profile> {
                             val.isEmpty ? "Enter your address" : null,
                         onChanged: (val) {
                           setState(() {
-                            address = val;
+                            this.address = val;
                           });
                         },
                       ),
                       SizedBox(
-                        height: 20,
+                        height: 12,
+                      ),
+                      TextFormField(
+                        initialValue: postalcode,
+                        decoration: textInputDecoration.copyWith(
+                          focusedBorder: outlineWhite,
+                          hintText: 'Postal code',
+                          hintStyle: TextStyle(height: 2),
+                          labelText: 'Postal code',
+                          labelStyle: TextStyle(height: 4),
+                        ),
+                        validator: (val) =>
+                            val.isEmpty ? "Enter your postal code" : null,
+                        onChanged: (val) {
+                          setState(() {
+                            this.postalcode = val;
+                          });
+                        },
                       ),
                       SizedBox(
                         height: 12,
                       ),
-                      Text(
-                        error,
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 14,
+                      TextFormField(
+                        initialValue: city,
+                        decoration: textInputDecoration.copyWith(
+                          focusedBorder: outlineWhite,
+                          hintText: 'City',
+                          hintStyle: TextStyle(height: 2),
+                          labelText: 'City',
+                          labelStyle: TextStyle(height: 4),
                         ),
+                        validator: (val) =>
+                            val.isEmpty ? "Enter your city" : null,
+                        onChanged: (val) {
+                          setState(() {
+                            this.city = val;
+                          });
+                        },
                       ),
                     ],
                   ),

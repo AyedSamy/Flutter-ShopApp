@@ -51,6 +51,7 @@ class _HomeState extends State<Home> {
                       context,
                       "/profile",
                       arguments: {
+                        'uid': user.uid,
                         'firstname': id[0],
                         'lastname': id[1],
                         'email': id[2],
