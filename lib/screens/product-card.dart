@@ -10,18 +10,17 @@ class ProductCard extends StatelessWidget {
   final String size;
   final String category;
   final String brand;
-  final Function delete;
 
-  ProductCard(
-      {this.name,
-      this.description,
-      this.price,
-      this.imageUrl,
-      this.seller,
-      this.size,
-      this.category,
-      this.brand,
-      this.delete});
+  ProductCard({
+    this.name,
+    this.description,
+    this.price,
+    this.imageUrl,
+    this.seller,
+    this.size,
+    this.category,
+    this.brand,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -117,13 +116,6 @@ class ProductCard extends StatelessWidget {
                   letterSpacing: 1.0,
                 ),
               ),
-              SizedBox(
-                height: 10.0,
-              ),
-              ElevatedButton.icon(
-                  onPressed: delete,
-                  icon: Icon(Icons.delete),
-                  label: Text("Delete")),
               SizedBox(
                 height: 30.0,
               ),

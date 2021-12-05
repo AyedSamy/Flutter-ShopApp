@@ -42,7 +42,7 @@ class _CartDetailState extends State<CartDetail> {
             itemBuilder: (context, i) {
               return ListTile(
                 leading: IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: Icon(Icons.disabled_by_default_rounded),
                   onPressed: () {
                     if (user != null) {
                       widget.userCartData.totalCartPrice -= widget.userCartData

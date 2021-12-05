@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:miaged/screens/sign_in.dart';
 import 'package:miaged/services/auth.dart';
 import 'package:miaged/services/database.dart';
 import 'package:miaged/shared/constants.dart';
@@ -44,6 +45,7 @@ class _ProfileState extends State<Profile> {
         : Scaffold(
             backgroundColor: Colors.blue[200],
             appBar: AppBar(
+              centerTitle: true,
               title: Text("Profile"),
               backgroundColor: Colors.blue[800],
               elevation: 0.0,
@@ -68,11 +70,11 @@ class _ProfileState extends State<Profile> {
                             this.email == null ? email : this.email,
                             this.password == null ? password : this.password);
                       }
-                      if (result == null) {
+                      if (result != true) {
                         updateUser = false;
                         setState(() {
                           loading = false;
-                          message = "Please supply a valid email";
+                          message = result;
                         });
                       }
                       if (updateUser == true) {
@@ -98,6 +100,8 @@ class _ProfileState extends State<Profile> {
                   },
                   style: ElevatedButton.styleFrom(
                     textStyle: TextStyle(color: Colors.white),
+                    primary: Colors.blue[800],
+                    elevation: 0,
                   ),
                 ),
               ],
@@ -281,6 +285,30 @@ class _ProfileState extends State<Profile> {
                   ),
                 ),
                 padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 50.0),
+                margin: EdgeInsets.only(bottom: 20),
+                child: ElevatedButton.icon(
+                  onPressed: () async {
+                    await _auth.signOut();
+                    Navigator.pushAndRemoveUntil<dynamic>(
+                      context,
+                      MaterialPageRoute<dynamic>(
+                        builder: (BuildContext context) => SignIn(),
+                      ),
+                      (route) =>
+                          false, //if you want to disable back feature set to false
+                    );
+                    //Navigator.pushNamed(context, "/signIn");
+                  },
+                  icon: Icon(Icons.person),
+                  label: Text("Logout"),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red[400]),
+                    elevation: MaterialStateProperty.all(0),
+                  ),
+                ),
               ),
             ]),
           );

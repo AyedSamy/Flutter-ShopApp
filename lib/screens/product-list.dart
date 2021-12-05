@@ -145,9 +145,6 @@ class _ProductListState extends State<ProductList> {
                   size: searchedProducts[i].size,
                   category: searchedProducts[i].category,
                   brand: searchedProducts[i].brand,
-                  delete: () => setState(() {
-                    searchedProducts.remove(searchedProducts[i]);
-                  }),
                 );
               },
             ),

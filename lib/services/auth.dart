@@ -48,18 +48,19 @@ class AuthService {
 
   Future updateEmailAndPassword(String email, String password) async {
     try {
-      // Create a credential
-      /* AuthCredential credential =
-          EmailAuthProvider.credential(email: email, password: password); */
-      // Reauthenticate
-      //await _auth.currentUser.reauthenticateWithCredential(credential);
+      // This operation is sensitive and requires recent authentication. It may be necessary to Log in again before retrying the operation.
       await _auth.currentUser.updateEmail(email);
       await _auth.currentUser.updatePassword(password);
       print("updated email pass");
       return true;
     } catch (e) {
+      String message;
       print(e.toString());
-      return null;
+      if (e.code == 'requires-recent-login') {
+        message = "Please log in again to update your email/password.";
+        return message;
+      }
+      return "The email/password update has failed.";
     }
   }
 

@@ -37,7 +37,8 @@ class _RegisterState extends State<Register> {
         : Scaffold(
             backgroundColor: Colors.blue[200],
             appBar: AppBar(
-              title: Text("Sign up to our Shop"),
+              centerTitle: true,
+              title: Text("Sign up to MIAGED"),
               backgroundColor: Colors.blue[800],
               elevation: 0.0,
             ),

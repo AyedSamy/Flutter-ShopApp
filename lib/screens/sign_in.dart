@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:miaged/screens/home.dart';
 import 'package:miaged/services/auth.dart';
 import 'package:miaged/shared/constants.dart';
 import 'package:miaged/shared/loading.dart';
@@ -26,6 +27,7 @@ class _SignInState extends State<SignIn> {
         : Scaffold(
             backgroundColor: Colors.blue[200],
             appBar: AppBar(
+              centerTitle: true,
               title: Text("Sign in to MIAGED"),
               backgroundColor: Colors.blue[800],
               elevation: 0.0,
@@ -87,7 +89,14 @@ class _SignInState extends State<SignIn> {
                           } else {
                             print(email);
                             print(password);
-                            Navigator.pop(context);
+                            Navigator.pushAndRemoveUntil<dynamic>(
+                              context,
+                              MaterialPageRoute<dynamic>(
+                                builder: (BuildContext context) => Home(),
+                              ),
+                              (route) =>
+                                  false, //if you want to disable back feature set to false
+                            );
                           }
                         }
                       },
