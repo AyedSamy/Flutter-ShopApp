@@ -12,9 +12,9 @@ Au lancement de l'application, l'utilisateur peut se logger en renseignant son l
 
 Voici des identifiants disponibles pour se connecter à l'application :
 
-Login: john@doe.fr
+**Login**: john@doe.fr
 
-Password: doedoe
+**Password**: doedoe
 
 ## Liste de vêtements & détail
 
@@ -33,10 +33,10 @@ Un bouton pour se déconnecter est également disponible sur le bas de la page (
 
 ## Filtrer sur la liste des vêtements
 
-Une liste déroulante a été mise en place pour filtrer les différentes catégories de vêtements ou accessoires. J'ai aussi rajouté la possiblité pour l'utilisateur de filtrer via le titre du produit dans une barre de recherche, et le filtre agit également selon la catégorie sélectionnée.
+Une liste déroulante a été mise en place pour filtrer les différentes catégories de vêtements ou accessoires. J'ai aussi rajouté la possiblité pour l'utilisateur de filtrer via le titre du produit dans une barre de recherche, et le filtre agit notamment selon la catégorie sélectionnée.
 
 ## Autres divers ajouts
 
 L'utilisateur a la possibilité de s'inscrire sur l'application dans une section Register.
 
-Il a la possibilité d'ajouter ses propres produits via un bouton Add item, et d'utiliser son appareil photo ou sa galerie pour fournir une image de son produit.
+Il a la possibilité d'ajouter ses propres produits via un bouton Add item, et d'utiliser son appareil photo ou sa galerie pour fournir une image de son produit, stockée par la suite sur Firebase (une image par défaut est utilisée si aucune image n'est jointe).
