@@ -1,4 +1,6 @@
 **Auteur** : Samy AYED
+**Cursus** : M2 MIAGE IA2
+**Année** : 2021-2022
 
 # Miaged
 
