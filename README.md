@@ -41,4 +41,4 @@ Une liste déroulante a été mise en place pour filtrer les différentes catég
 
 L'utilisateur a la possibilité de s'inscrire sur l'application dans une section Register.
 
-Il a la possibilité d'ajouter ses propres produits via un bouton Add item, et d'utiliser son appareil photo ou sa galerie pour fournir une image de son produit, stockée par la suite sur Firebase (une image par défaut est utilisée si aucune image n'est transmise).
+Il a la possibilité d'ajouter ses propres produits via un bouton Add item, et d'utiliser son appareil photo ou sa galerie pour fournir une image de son produit, stockée par la suite sur Firebase (une image par défaut est néanmoins utilisée si aucune image n'est transmise).
