@@ -1,3 +1,5 @@
+**Auteur** : Samy AYED
+
 # Miaged
 
 Miaged est une application mobile basée sur le style de Vinted, développée en Flutter et fonctionnelle sous Android.
